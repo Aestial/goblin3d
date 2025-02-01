@@ -272,8 +272,13 @@ bool goblin3d_parse_obj_file(const char* filename, goblin3d_obj_t* obj) {
         if(c == '\n' || c == '\r') {
             if(line.startsWith("v ")) {
                 float x, y, z;
+                const char *str = line.c_str() + 2; // Skip "v "
+                char *end;
 
-                sscanf(line.c_str() + 2, "%f %f %f", &x, &y, &z);
+                x = strtof(str, &end); // Parse x
+                y = strtof(end, &end); // Parse y
+                z = strtof(end, &end); // Parse z
+
                 if (!goblin3d_add_point(obj, x, y, z)) {
                     file.close();
                     return false;
